@@ -1,0 +1,5 @@
+excel:
+    resource: "@ExcelBundle/Controller/ExcelController.php"
+    type:     annotation
+    prefix:   /excel
+
