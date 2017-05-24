@@ -1,5 +1,4 @@
 <?php
-
 namespace ExcelBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -13,17 +12,17 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Game
 {
-
     const CHOICE_ROCK = 'Rock';
     const CHOICE_PAPER = 'Paper';
     const CHOICE_SCISSORS = 'Scissors';
     const CHOICE_SPOCK = 'Spock';
     const CHOICE_LIZARD = 'Lizard';
-    const WINNER_TIE = 'Tie';
     const WINNER_USER = 'User';
     const WINNER_COMPUTER = 'Computer';
+    const WINNER_TIE = 'Tie';
     
-    public static function getChoiceCollection() {
+    public static function getChoiceCollection()
+    {
     	$coll = array(
     			self::CHOICE_ROCK,
     			self::CHOICE_PAPER,
@@ -34,7 +33,18 @@ class Game
     	return $coll;
     }
     
-    public static function getRandomChoiceCollectionIndex() {
+    public static function getWinnerCollection()
+    {
+    	$coll = array(
+    			self::WINNER_USER,
+    			self::WINNER_COMPUTER,
+    			self::WINNER_TIE
+    	);
+    	return $coll;
+    }
+    
+    public static function getRandomChoiceCollectionIndex()
+    {
     	$choiceCollection = self::getChoiceCollection();
     	$index = mt_rand(0,count($choiceCollection)-1);
     	return $index;
@@ -154,20 +164,16 @@ class Game
     	return $this;
     }
     
-    
-    
-    public function play($choice1, $choice2) {
+    public function play($choice1, $choice2)
+    {
     	$modulus = ($choice1-$choice2+5)%5;
     	if ($modulus === 0) {
     		return self::WINNER_TIE;
-    	}
-    	elseif ($modulus ===1 || $modulus === 3) {
+    	} elseif ($modulus ===1 || $modulus === 3) {
     		return self::WINNER_USER;
-    	}
-    	else {
+    	} else {
     		return self::WINNER_COMPUTER;
     	}
     }
-
 }
 

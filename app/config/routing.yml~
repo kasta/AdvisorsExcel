@@ -1,0 +1,9 @@
+excel:
+    resource: "@ExcelBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+wic_excel:
+    resource: "@WICExcelBundle/Controller/ExcelController.php"
+    type:     annotation
+    prefix:   /excel

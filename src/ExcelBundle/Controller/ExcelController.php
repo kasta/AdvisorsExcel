@@ -1,17 +1,13 @@
 <?php
-
 namespace ExcelBundle\Controller;
 
 use ExcelBundle\Entity\Game;
 use ExcelBundle\Form\Type\GameType;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 
 class ExcelController extends Controller
 {
@@ -23,8 +19,7 @@ class ExcelController extends Controller
     {        
         $game = new Game();
         $gameForm = $this->createForm(new GameType(), $game);
-        
-        
+               
         if ($request->isMethod('POST')) {
         	$gameForm->handleRequest($request);
         	if ($gameForm->isValid()) {
@@ -54,6 +49,30 @@ class ExcelController extends Controller
         return array(
         		'form' => $gameForm->createView(),
         ); 
-
+    }
+    
+    /**
+     * @Route("/stats", name="excel_stats")
+     * @Template()
+     */
+    public function statsAction(Request $request)
+    {
+    	$em = $this->getDoctrine()->getManager();
+	
+    	//Get number of wins by each player, plus ties
+    	foreach (Game::getWinnerCollection() as $winner ) {
+			$winnerArray[$winner] = $em->getRepository('ExcelBundle:Game')->getWinCount($winner);
+    	}
+		
+    	//Get number of times each choice was selected by each player
+		foreach (Game::getChoiceCollection() as $index=>$choice ) {
+			$choiceArray['User'][$choice] = $em->getRepository('ExcelBundle:Game')->getChoiceCount('user', $index);
+			$choiceArray['Computer'][$choice] = $em->getRepository('ExcelBundle:Game')->getChoiceCount('computer', $index);
+		}
+	
+    	return array(
+    			'winnerArray' => $winnerArray,
+    			'choiceArray' => $choiceArray,
+    	);
     }
 }

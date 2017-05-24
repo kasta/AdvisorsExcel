@@ -1,0 +1,28 @@
+<a href="{{ path('excel_game') }}">Go to Game</a>
+<br /><br />
+
+<div>
+# OF WINS
+</div>
+{% for key,val in winnerArray %}
+    <div>
+        {{ key }}: {{ val }}
+    </div>
+{% endfor %}
+
+<br /><br />
+
+<div>
+# OF CHOICES
+</div>
+{% for player,choices in choiceArray %}
+    <div>
+        {{ player }}
+    </div>
+    {% for choice,count  in choices %}
+    <div>
+        {{ choice }}: {{ count }}
+    </div>
+    {% endfor %}
+    <br />
+{% endfor %}
